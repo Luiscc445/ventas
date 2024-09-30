@@ -20,18 +20,21 @@ use App\Http\Livewire\Categories;
 |
 */
 
+// Redirigir la ruta principal al login
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('categories', Categories::class);
-Route::get('products', ProductsComponent::class);
-Route::get('coins', CoinsComponent::class);
-Route::get('pos', PosComponent::class);
-Route::get('roles', RolesComponent::class);
-Route::get('permisos', PermisosComponent::class);
-Route::get('asignar', AsignarComponent::class);
+// Agrupar rutas que requieren autenticación
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('categories', Categories::class);
+    Route::get('products', ProductsComponent::class);
+    Route::get('coins', CoinsComponent::class);
+    Route::get('pos', PosComponent::class);
+    Route::get('roles', RolesComponent::class);
+    Route::get('permisos', PermisosComponent::class);
+    Route::get('asignar', AsignarComponent::class);
+});
